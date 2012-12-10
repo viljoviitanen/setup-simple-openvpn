@@ -29,7 +29,7 @@ Login to the EC2 machine
 
 then download and run the installation script:
 
-  wget <INSERT URL HERE>
+  wget https://github.com/downloads/viljoviitanen/setup-simple-openvpn/openvpn-setup.sh
 
   sudo sh openvpn-setup.sh
 
