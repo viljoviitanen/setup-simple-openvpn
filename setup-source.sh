@@ -1,5 +1,5 @@
 #!/bin/sh
-#    Setup Simple OpenVPN server for Amazon Linux
+#    Setup Simple OpenVPN server for Amazon Linux and Centos
 #    Copyright (C) 2012 Viljo Viitanen <viljo.viitanen@iki.fi>
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -15,9 +15,11 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+#    2012-12-11: initial version, tested only on amazon linux
+#    2012-12-12: added centos 6.3 compability
 
 #do not use any funny characters here, just lower case a-z. 
-SERVERNAME='amazonopenvpn'
+SERVERNAME='simpleopenvpn'
 
 OPENVPN='/etc/openvpn'
 
@@ -33,8 +35,14 @@ then
   exit 0
 fi
 
-#install openvpn and dependencies
-yum -y install openvpn
+#install openvpn, zip and dependencies
+yum -y install openvpn zip || {
+  echo "============================================================"
+  echo "Could not install openvpn with yum. Enable EPEL repository?"
+  echo "See http://fedoraproject.org/wiki/EPEL"
+  echo "============================================================"
+  exit 1
+}
 
 #enable ip forwarding in openvpn startup script
 sed -i /etc/init.d/openvpn -e '/proc.sys.net.ipv4.ip_forward/ s/#//'
@@ -48,26 +56,39 @@ sed -n -e '/^BEGIN_BASE64_ENCODED_TAR_GZ/,+999999p' $0 | sed -e '1d' | base64 -d
 #set up nat for the vpn
 if [ -f /etc/sysconfig/iptables ]
 then
-  echo "/etc/sysconfig/iptables exists, aborting!"
-  exit 1
-else
-  cat > /etc/sysconfig/iptables <<END
-*nat
-:POSTROUTING ACCEPT [0:0]
-:PREROUTING ACCEPT [0:0]
-:OUTPUT ACCEPT [0:0]
--A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o eth0 -j MASQUERADE
-COMMIT
-END
+  echo "============================================================"
+  echo "/etc/sysconfig/iptables exists."
+  echo "I'm going to add the necessary iptables rules anyway."
+  echo "You should check the rules are okay afterwards."
+  echo "Old rules are saved to /etc/sysconfig/iptables.vpnsave"
+  echo "============================================================"
+  sleep 4
+  mv /etc/sysconfig/iptables /etc/sysconfig/iptables.vpnsave || {
+    echo "renaming old /etc/sysconfig/iptables failed. Aborting!"
+    exit 1
+  }
 fi
+#openvpn udp port
+iptables -I INPUT -p udp --dport 1194 -j ACCEPT
 
+iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o eth0 -j MASQUERADE
+#default firewall in centos forbids these
+iptables -I FORWARD -i eth0 -o tun0 -j ACCEPT
+iptables -I FORWARD -i tun0 -o eth0 -j ACCEPT
+
+#not sure if these are really necessary, they probably are the default.
+iptables -t nat -P POSTROUTING ACCEPT
+iptables -t nat -P PREROUTING ACCEPT
+iptables -t nat -P OUTPUT ACCEPT
+
+service iptables save
 service iptables restart
 
 #just to be sure...
 ME=`echo "$SERVERNAME" | tr -cd [a-z]`
 if [ "x$ME" = "x" ]
 then
-  ME="myserver"
+  ME="simpleopenvpn"
 fi
 
 #setup keys
@@ -92,7 +113,7 @@ fi
 
 #first find out external ip. http://www.whatismyip.com/ip-faq/automation-rules/
 #cache the result so this can be tested safely without hitting any limits
-if [ -f "$HOME/.my.ip" ]
+if [ `find "$HOME/.my.ip" -mmin -5 2>/dev/null` ]
 then
   IP=`cat "$HOME/.my.ip" | tr -cd [0-9].`
   echo "Using cached external ip address"
