@@ -36,7 +36,7 @@ INSTALLATION INSTRUCTIONS
 
 - Enable the EPEL repository. When writing this, it's as simple as: ::
 
-    sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-7.noarch.rpm
+    sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
   If the link does not work, see instructions at http://fedoraproject.org/wiki/EPEL
 
