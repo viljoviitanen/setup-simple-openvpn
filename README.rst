@@ -1,7 +1,7 @@
 Setup Simple OpenVPN server for Amazon Linux and Centos
 =======================================================
 
-Script is tested on Amazon EC2 Linux AMI 2012.09, the default AMI in
+Script is tested on Amazon EC2 Linux AMI 2013.03, the default AMI in
 "Launch Instance Classic Wizard" and Rackspace Centos 6.3.
 
 User documentation is quite lacking currently.
@@ -34,6 +34,10 @@ INSTALLATION INSTRUCTIONS
 
 - Login to the machine
 
+- Install zip ::
+
+    yum -y install zip
+
 - Enable the EPEL repository. When writing this, it's as simple as: ::
 
     sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
@@ -44,17 +48,18 @@ INSTALLATION INSTRUCTIONS
 
 **Common**
 
-- Download and run the installation script: ::
+- Download the repo zip file and run the installation script: ::
 
-    wget https://github.com/downloads/viljoviitanen/setup-simple-openvpn/openvpn-setup.sh
-
-    sudo sh openvpn-setup.sh
+    wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
+    unzip master.zip
+    cd setup-simple-openvpn
+    sudo sh setup.sh
 
 - Let the script run. Take note if the server external ip address
   detection is succesful. If it's not, you need to edit the
   configuration files before using them.
 
-- Download the configuration files from directory tmp.*,
+- Download the configuration files from directory setup-simple-openvpn/openvpn.*,
   there is both a zipped file with all the config files and
   the plain configuration files
 

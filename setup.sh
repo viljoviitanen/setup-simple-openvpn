@@ -17,6 +17,9 @@
 
 #    2012-12-11: initial version, tested only on amazon linux
 #    2012-12-12: added centos 6.3 compability
+#    2013-03-30: amazon linux 2013.03 - service iptables is missing, use rc.local
+#                whatismyip automation has stopped working, use ipchicken.com
+#                change from embedded tar gz to repo zip download
 
 #do not use any funny characters here, just lower case a-z. 
 SERVERNAME='simpleopenvpn'
@@ -29,6 +32,12 @@ then
   exit 1
 fi
 
+if [ ! -f template-client-config ]
+then
+  echo "Necessary files missing. Run script from same directory where you unzipped the zip file?"
+  exit 1
+fi
+
 if [ `id -u` -ne 0 ] 
 then
   echo "Need root, try with sudo"
@@ -36,7 +45,7 @@ then
 fi
 
 #install openvpn, zip and dependencies
-yum -y install openvpn zip || {
+yum -y install openvpn || {
   echo "============================================================"
   echo "Could not install openvpn with yum. Enable EPEL repository?"
   echo "See http://fedoraproject.org/wiki/EPEL"
@@ -49,25 +58,12 @@ sed -i /etc/init.d/openvpn -e '/proc.sys.net.ipv4.ip_forward/ s/#//'
 
 mkdir -p $OPENVPN || { echo "Cannot mkdir $OPENVPN, aborting!"; exit 1; }
 
-#unpack embedded base64 encoded file, a gzipped tar containing
 #openvpn config files and easy-rsa tool
-sed -n -e '/^BEGIN_BASE64_ENCODED_TAR_GZ/,+999999p' $0 | sed -e '1d' | base64 -d | ( cd $OPENVPN; tar zxf - )
+cp -r easy-rsa $OPENVPN/
+cp template-server-config $OPENVPN/openvpn.conf
 
 #set up nat for the vpn
-if [ -f /etc/sysconfig/iptables ]
-then
-  echo "============================================================"
-  echo "/etc/sysconfig/iptables exists."
-  echo "I'm going to add the necessary iptables rules anyway."
-  echo "You should check the rules are okay afterwards."
-  echo "Old rules are saved to /etc/sysconfig/iptables.vpnsave"
-  echo "============================================================"
-  sleep 4
-  mv /etc/sysconfig/iptables /etc/sysconfig/iptables.vpnsave || {
-    echo "renaming old /etc/sysconfig/iptables failed. Aborting!"
-    exit 1
-  }
-fi
+cat >> /etc/rc.local << END
 #openvpn udp port
 iptables -I INPUT -p udp --dport 1194 -j ACCEPT
 
@@ -80,9 +76,8 @@ iptables -I FORWARD -i tun0 -o eth0 -j ACCEPT
 iptables -t nat -P POSTROUTING ACCEPT
 iptables -t nat -P PREROUTING ACCEPT
 iptables -t nat -P OUTPUT ACCEPT
-
-service iptables save
-service iptables restart
+END
+sh /etc/rc.local
 
 #just to be sure...
 ME=`echo "$SERVERNAME" | tr -cd [a-z]`
@@ -95,7 +90,7 @@ fi
 ( cd $OPENVPN/easy-rsa || { echo "Cannot cd into $OPENVPN/easy-rsa, aborting!"; exit 1; }
   [ -d keys ] && { echo "easy-rsa/keys directory already exists, aborting!"; exit 1; }
   cp vars myvars
-  sed -i -e 's/Fort-Funston/$ME/' -e 's/SanFrancisco/Simple OpenVPN server for Amazon Linux/' myvars
+  sed -i -e 's/Fort-Funston/$ME/' -e 's/SanFrancisco/Simple OpenVPN server/' myvars
   . ./myvars
   ./clean-all
   ./build-dh
@@ -111,7 +106,7 @@ fi
 
 #generate the client config file
 
-#first find out external ip. http://www.whatismyip.com/ip-faq/automation-rules/
+#first find out external ip with ipchicken.com
 #cache the result so this can be tested safely without hitting any limits
 if [ `find "$HOME/.my.ip" -mmin -5 2>/dev/null` ]
 then
@@ -119,7 +114,7 @@ then
   echo "Using cached external ip address"
 else
   echo "Detecting external ip address"
-  IP=`curl -A "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0" http://automation.whatismyip.com/n09230945.asp | tr -cd [0-9]. `
+  IP=`curl -s ipchicken.com|egrep '[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+.*<br>' | awk '{print $1}' | tr -cd [0-9]. `
   echo "$IP" > "$HOME/.my.ip"
 fi
 
@@ -137,14 +132,15 @@ else
   echo "============================================================"
   echo "Make sure it is correct before using the client configuration files!"
 fi
+sleep 2
 
-TMPDIR=`mktemp -d --tmpdir=.` || { echo "Cannot make temporary directory, aborting!"; exit 1; }
+TMPDIR=`mktemp -d --tmpdir=. openvpn.XXX` || { echo "Cannot make temporary directory, aborting!"; exit 1; }
 
+cp template-client-config $TMPDIR/$ME.ovpn
 cd $TMPDIR || { echo "Cannot cd into a temporary directory, aborting!"; exit 1; }
 
 cp $OPENVPN/easy-rsa/keys/ca.crt "ca-$ME.crt"
 cp $OPENVPN/easy-rsa/keys/client1-$ME.key $OPENVPN/easy-rsa/keys/client1-$ME.crt .
-cp $OPENVPN/client.ovpn $ME.ovpn
 sed -i -e "s/VPN_SERVER_ADDRESS/$IP/" -e "s/client1/client1-$ME/" -e "s/^ca ca.crt/ca ca-$ME.crt/" $ME.ovpn
 zip $ME-$IP.zip $ME.ovpn ca-$ME.crt client1-$ME.key client1-$ME.crt
 chmod -R a+rX .
@@ -155,5 +151,3 @@ chkconfig openvpn on
 service openvpn start
 
 exit 0
-
-BEGIN_BASE64_ENCODED_TAR_GZ
