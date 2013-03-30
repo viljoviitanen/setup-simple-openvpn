@@ -52,7 +52,7 @@ INSTALLATION INSTRUCTIONS
 
     wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
     unzip master.zip
-    cd setup-simple-openvpn
+    cd setup-simple-openvpn-master
     sudo sh setup.sh
 
 - Let the script run. Take note if the server external ip address
