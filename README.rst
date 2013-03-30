@@ -59,7 +59,7 @@ INSTALLATION INSTRUCTIONS
   detection is succesful. If it's not, you need to edit the
   configuration files before using them.
 
-- Download the configuration files from directory setup-simple-openvpn/openvpn.*,
+- Download the configuration files from directory setup-simple-openvpn-master/openvpn.*,
   there is both a zipped file with all the config files and
   the plain configuration files
 
