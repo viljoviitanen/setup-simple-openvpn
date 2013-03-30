@@ -36,7 +36,7 @@ INSTALLATION INSTRUCTIONS
 
 - Install zip ::
 
-    yum -y install zip
+    sudo yum -y install zip
 
 - Enable the EPEL repository. When writing this, it's as simple as: ::
 
