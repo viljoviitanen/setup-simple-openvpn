@@ -1,7 +1,7 @@
 Setup Simple OpenVPN server for Amazon Linux and Centos
 =======================================================
 
-Script is tested on Amazon EC2 Linux AMI 2013.03, the default AMI in
+Script is tested on Amazon EC2 Linux AMI 2013.03.1, the default AMI in
 "Launch Instance Classic Wizard" and Rackspace Centos 6.3.
 
 User documentation is quite lacking currently.
@@ -18,7 +18,7 @@ Licensed under GPL version 2.
 INSTALLATION INSTRUCTIONS
 =========================
 
-**Amazon Linux 2012.9 on Amazon EC2**
+**Amazon Linux 2013.03.1 on Amazon EC2**
 
 - Create an Amazon Linux EC2 image.
 
