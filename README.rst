@@ -1,8 +1,9 @@
 Setup Simple OpenVPN server for Amazon Linux and Centos
 =======================================================
 
-Script is tested on Amazon EC2 Linux AMI 2013.03.1, the default AMI in
-"Launch Instance Classic Wizard" and Rackspace Centos 6.3.
+Script has been tested on Amazon EC2 Linux AMI 2013.09,
+Amazon EC2 Red Hat Enterprise Linux 6.4
+and Rackspace Centos 6.4.
 
 User documentation is quite lacking currently.
 
@@ -18,25 +19,29 @@ Licensed under GPL version 2.
 INSTALLATION INSTRUCTIONS
 =========================
 
-**Amazon Linux 2013.03.1 on Amazon EC2**
+**Amazon Linux 2013.09 on Amazon EC2**
 
-- Create an Amazon Linux EC2 image.
+- Create an Amazon Linux EC2 instance.
 
 - Allow UDP port 1194 through the firewall ("security group")
 
-- Login to the EC2 machine
+- Login to the server
 
 - Continue with the common instructions
 
-**Centos 6.3 on Rackspace, maybe others too**
+**Red Hat Enterprise Linux 6.4 on Amazon EC2**
 
-- Create the Centos image
+- Create a Red Hat Enterprise Linux EC2 instance.
 
-- Login to the machine
+- Allow UDP port 1194 through the firewall ("security group")
 
-- Install zip ::
+- Login to the server
 
-    sudo yum -y install zip
+- Fix buggy rc.local file in the image: https://bugzilla.redhat.com/show_bug.cgi?id=956531 ::
+
+    sudo sed -i.bak 19,21d /etc/rc.local
+    
+  - The original file is left at /etc/rc.local.bak.
 
 - Enable the EPEL repository. When writing this, it's as simple as: ::
 
@@ -46,12 +51,24 @@ INSTALLATION INSTRUCTIONS
 
 - Continue with the common instructions
 
+**Centos 6.4 on Rackspace, maybe others too**
+
+- Create a Centos server
+
+- Login to the server
+
+- Install zip and unzip ::
+
+    sudo yum -y install zip unzip
+
+- Continue with the common instructions
+
 **Common**
 
 - Download the repo zip file and run the installation script: ::
 
     wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
-    unzip master.zip
+    unzip master
     cd setup-simple-openvpn-master
     sudo sh setup.sh
 
@@ -74,7 +91,8 @@ INSTALLATION INSTRUCTIONS
     simpleopenvpn.ovpn file, make the vpn not start automatically.
     Do not move the certificate files afterwards, they are needed.
     Author has tested this on Ubuntu 12.04, the package to apt-get is
-    network-manager-openvpn-gnome .
+    network-manager-openvpn-gnome . If you create the connection manually,
+    note you need to enable LZO compression in advanced settings.
 
 - Enjoy your very own VPN!
 
