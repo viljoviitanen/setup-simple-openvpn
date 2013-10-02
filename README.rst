@@ -1,9 +1,15 @@
-Setup Simple OpenVPN server for Amazon Linux and Centos
-=======================================================
+Setup Simple OpenVPN server for Amazon Linux, Centos, Ubuntu, Debian
+====================================================================
 
-Script has been tested on Amazon EC2 Linux AMI 2013.09,
-Amazon EC2 Red Hat Enterprise Linux 6.4
-and Rackspace Centos 6.4.
+Script has been tested on Amazon EC2:
+    Amazon Linux AMI 2013.09,
+    Red Hat Enterprise Linux 6.4,
+    Ubuntu Server 12.04.2 LTS
+Rackspace:
+    Centos 6.4,
+    Ubuntu 12.04 LTS (Precise Pangolin),
+    Debian 6.06 (Squeeze),
+    Debian 7 (Wheezy)
 
 User documentation is quite lacking currently.
 
@@ -13,53 +19,41 @@ GPL version 2 licensed easy-rsa tools and example configuration copied
 from OpenVPN project, Copyright (C) 2002-2010 OpenVPN Technologies, Inc.
 See OPENVPN-COPYING.txt
 
-Other parts Copyright 2012 Viljo Viitanen <viljo.viitanen@iki.fi>
+Other parts Copyright 2012-2013 Viljo Viitanen <viljo.viitanen@iki.fi>
 Licensed under GPL version 2. 
 
 INSTALLATION INSTRUCTIONS
 =========================
 
-**Amazon Linux 2013.09 on Amazon EC2**
-
-- Create an Amazon Linux EC2 instance.
+**Amazon EC2, all images**
 
 - Allow UDP port 1194 through the firewall ("security group")
 
-- Login to the server
+**Amazon Linux 2013.09**
 
-- Continue with the common instructions
+- Just continue to the common instructions
 
-**Red Hat Enterprise Linux 6.4 on Amazon EC2**
+**Centos 6.4, Red Hat Enterprise Linux 6.4**
 
-- Create a Red Hat Enterprise Linux EC2 instance.
+- Install unzip ::
 
-- Allow UDP port 1194 through the firewall ("security group")
-
-- Login to the server
-
-- Fix buggy rc.local file in the image: https://bugzilla.redhat.com/show_bug.cgi?id=956531 ::
-
-    sudo sed -i.bak 19,21d /etc/rc.local
-    
-  - The original file is left at /etc/rc.local.bak.
+    sudo yum -y install unzip
 
 - Enable the EPEL repository. When writing this, it's as simple as: ::
 
     sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
-  If the link does not work, see instructions at http://fedoraproject.org/wiki/EPEL
+  If the link does not work, see instructions at http://fedoraproject.org/wiki/EPEL .
+  Also EPEL may already be enabled on your server, so just try to run the setup script.
+  The script will complain if it cannot install the openvpn package.
 
 - Continue with the common instructions
 
-**Centos 6.4 on Rackspace, maybe others too**
+**Ubuntu 12.04, Debian 6.06, Debian 7**
 
-- Create a Centos server
+- Install unzip ::
 
-- Login to the server
-
-- Install zip and unzip ::
-
-    sudo yum -y install zip unzip
+    sudo apt-get -y install unzip
 
 - Continue with the common instructions
 
