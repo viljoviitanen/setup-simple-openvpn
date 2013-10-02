@@ -86,6 +86,9 @@ then
   sed -i.bak 19,21d /etc/rc.d/rc.local 
 fi
 
+#ubuntu has exit 0 at the end of the file.
+sed -i '/^exit 0/d' /etc/rc.local
+
 #set up nat for the vpn
 cat >> /etc/rc.local << END
 echo 1 > /proc/sys/net/ipv4/ip_forward
