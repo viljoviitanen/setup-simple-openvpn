@@ -1,6 +1,6 @@
 #!/bin/sh
-#    Setup Simple OpenVPN server for Amazon Linux and Centos
-#    Copyright (C) 2012 Viljo Viitanen <viljo.viitanen@iki.fi>
+#    Setup Simple OpenVPN server for Amazon Linux, Centos, Ubuntu and Debian
+#    Copyright (C) 2012-2013 Viljo Viitanen <viljo.viitanen@iki.fi>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License version 2
@@ -20,6 +20,9 @@
 #    2013-03-30: amazon linux 2013.03 - service iptables is missing, use rc.local
 #                whatismyip automation has stopped working, use ipchicken.com
 #                change from embedded tar gz to repo zip download
+#    2013-10-02: add debian squeeze&wheezy and ubuntu 12.04 compatibility
+#                workaround for amazon ec2 rhel 6.4 image bug https://bugzilla.redhat.com/show_bug.cgi?id=956531
+#                use http://ipecho.net/plain - http://ipecho.net/developers.html
 
 #do not use any funny characters here, just lower case a-z. 
 SERVERNAME='simpleopenvpn'
@@ -45,16 +48,31 @@ then
 fi
 
 #install openvpn, zip and dependencies
-yum -y install openvpn || {
+if which apt-get 2>/dev/null
+then
+   apt-get -y install openvpn zip || {
+    echo "============================================================"
+    echo "Could not install openvpn and zip with apt-get. Huh?"
+    echo "============================================================"
+    exit 1
+  }
+elif which yum 2>/dev/null
+then
+  yum -y install openvpn zip || {
+    echo "============================================================"
+    echo "Could not install openvpn and zip with yum." 
+    echo "Enable EPEL repository?"
+    echo "See http://fedoraproject.org/wiki/EPEL"
+    echo "============================================================"
+    exit 1
+  }
+else
   echo "============================================================"
-  echo "Could not install openvpn with yum. Enable EPEL repository?"
-  echo "See http://fedoraproject.org/wiki/EPEL"
+  echo "Cannot find apt-get or yum. Can't continue."
   echo "============================================================"
   exit 1
-}
+fi
 
-#enable ip forwarding in openvpn startup script
-sed -i /etc/init.d/openvpn -e '/proc.sys.net.ipv4.ip_forward/ s/#//'
 
 mkdir -p $OPENVPN || { echo "Cannot mkdir $OPENVPN, aborting!"; exit 1; }
 
@@ -62,8 +80,15 @@ mkdir -p $OPENVPN || { echo "Cannot mkdir $OPENVPN, aborting!"; exit 1; }
 cp -r easy-rsa $OPENVPN/
 cp template-server-config $OPENVPN/openvpn.conf
 
+if grep -q "cat <<EOL >> /etc/ssh/sshd_config" /etc/rc.d/rc.local
+then
+  echo "Note: working around a bug in Amazon EC2 RHEL 6.4 image"
+  sed -i.bak 19,21d /etc/rc.d/rc.local 
+fi
+
 #set up nat for the vpn
 cat >> /etc/rc.local << END
+echo 1 > /proc/sys/net/ipv4/ip_forward
 #openvpn udp port
 iptables -I INPUT -p udp --dport 1194 -j ACCEPT
 
@@ -106,7 +131,7 @@ fi
 
 #generate the client config file
 
-#first find out external ip with ipchicken.com
+#first find out external ip 
 #cache the result so this can be tested safely without hitting any limits
 if [ `find "$HOME/.my.ip" -mmin -5 2>/dev/null` ]
 then
@@ -114,7 +139,7 @@ then
   echo "Using cached external ip address"
 else
   echo "Detecting external ip address"
-  IP=`curl -s ipchicken.com|egrep '[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+.*<br>' | awk '{print $1}' | tr -cd [0-9]. `
+  IP=`wget -q -O - http://ipecho.net/plain`
   echo "$IP" > "$HOME/.my.ip"
 fi
 
@@ -147,7 +172,11 @@ chmod -R a+rX .
 echo "Generated configuration files are in $TMPDIR/ !"
 
 #enable openvpn at boot and start server!
-chkconfig openvpn on
+if which yum 2>/dev/null
+then
+  chkconfig openvpn on
+fi
+
 service openvpn start
 
 exit 0
