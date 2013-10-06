@@ -30,12 +30,12 @@
 # number for each one.  You will need to
 # open up this port on your firewall.
 ;port 443
-port 1194
+port VPN_PORT
 
 
 # TCP or UDP server?
 ;proto tcp
-proto udp
+proto VPN_PROTO
 
 # "dev tun" will create a routed IP tunnel,
 # "dev tap" will create an ethernet tunnel.

@@ -18,14 +18,14 @@ client
 # The hostname/IP and port of the server.
 # You can have multiple remote entries
 # to load balance between the servers.
-remote VPN_SERVER_ADDRESS
+remote VPN_SERVER_ADDRESS VPN_PORT
 ;remote my-server-2 1194
 
 # Are we connecting to a TCP or
 # UDP server?  Use the same setting as
 # on the server.
 ;proto tcp
-proto udp
+proto VPN_PROTO
 
 # SSL/TLS parms.
 # See the server config file for more
