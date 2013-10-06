@@ -93,6 +93,13 @@ INSTALLATION INSTRUCTIONS
 Some notes
 ==========
 
+You can change the default port (1197) and protocol (udp) on the command
+line when starting the setup. See ``sh setup.sh -h`` for details. This is
+useful if the default port/protocol are blocked. If you have trouble
+connecting to the vpn with the defaults, try ``sudo sh setup.sh 443 tcp``
+(443 is the https port, it's rarely blocked). If you have an external
+firewall like with Amazon EC2, remember to open the port/protocol there.
+
 Clients are configured to use Google public dns servers when
 the vpn connection is active: https://developers.google.com/speed/public-dns/
 
