@@ -59,6 +59,9 @@ INSTALLATION INSTRUCTIONS
 
 **Common**
 
+- *Make sure you sync your server's clock with NTP or you will be unable to connect to your new VPN server
+due to your SSL certificates being invalid*
+
 - Download the repo zip file and run the installation script: ::
 
     wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
