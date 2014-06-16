@@ -33,7 +33,7 @@ if [ "x$1" = "x-h" -o "x$1" = "x--help" ]
 then
   echo "Usage: $0 [port] [protocol] [servername]"
   echo "Default: port 1194, protocol udp, servername simpleopenvpn."
-  echo "The server name is just your your convinience, it does not"
+  echo "The server name is just for your convinience, it does not"
   echo "have to be related to the dns name of the server."
   exit 0
 fi
