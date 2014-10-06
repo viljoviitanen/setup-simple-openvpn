@@ -60,5 +60,7 @@ Changes from Original
 =====================
 
 Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
+
 Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
+
 The script now creates a Linux specific version, since not all distros support the Windows method of pushing DNS configs, and also needs script-security 2.
