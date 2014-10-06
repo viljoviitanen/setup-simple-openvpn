@@ -55,24 +55,10 @@ INSTALLATION INSTRUCTIONS
   there is both a zipped file with all the config files and
   the plain configuration files
 
-- Get your openvpn client to use the files.
-
-    On Windows, after installing openvpn, just place the files in the openvpn
-    configuration directory, shortcut link to the config dir is in the start menu.
-    Also note, on Windows you need to run the OpenVPN GUI with administator
-    privileges.
-
-    On many Linux desktops, start VPN connection manager, and IMPORT the
-    simpleopenvpn.ovpn file, make the vpn not start automatically.
-    Do not move the certificate files afterwards, they are needed.
-    Author has tested this on Ubuntu 12.04, the package to apt-get is
-    network-manager-openvpn-gnome . If you create the connection manually,
-    note you need to enable LZO compression in advanced settings.
-
-- Enjoy your very own VPN!
 
 Changes from Original
 =====================
 
 Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
 Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
+The script now creates a Linux specific version, since not all distros support the Windows method of pushing DNS configs, and also needs script-security 2.

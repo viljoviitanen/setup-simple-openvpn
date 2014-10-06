@@ -237,13 +237,17 @@ sleep 2
 TMPDIR=`mktemp -d --tmpdir=. openvpn.XXX` || { echo "Cannot make temporary directory, aborting!"; exit 1; }
 
 cp template-client-config $TMPDIR/$ME.ovpn
+cp template-client-config-linux $TMPDIR/linux-$ME.ovpn
 cd $TMPDIR || { echo "Cannot cd into a temporary directory, aborting!"; exit 1; }
+
 
 cp $OPENVPN/easy-rsa/keys/ca.crt "ca-$ME.crt"
 cp $OPENVPN/easy-rsa/keys/client1-$ME.key $OPENVPN/easy-rsa/keys/client1-$ME.crt .
 sed -i -e "s/VPN_SERVER_ADDRESS/$IP/" -e "s/client1/client1-$ME/" -e "s/^ca ca.crt/ca ca-$ME.crt/" $ME.ovpn
 sed -i -e "s/VPN_PROTO/$PROTO/" -e "s/VPN_PORT/$PORT/"  $ME.ovpn
-zip $ME-$IP.zip $ME.ovpn ca-$ME.crt client1-$ME.key client1-$ME.crt
+sed -i -e "s/VPN_SERVER_ADDRESS/$IP/" -e "s/client1/client1-$ME/" -e "s/^ca ca.crt/ca ca-$ME.crt/" linux-$ME.ovpn
+sed -i -e "s/VPN_PROTO/$PROTO/" -e "s/VPN_PORT/$PORT/"  linux-$ME.ovpn
+zip $ME-$IP.zip $ME.ovpn linux-$ME.ovpn ca-$ME.crt client1-$ME.key client1-$ME.crt
 chmod -R a+rX .
 
 echo "----"
