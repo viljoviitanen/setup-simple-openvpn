@@ -32,15 +32,13 @@ OPENVPN='/etc/openvpn'
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ]
 then
   echo "Usage: $0 [port] [protocol] [servername]"
-  echo "Default: port 1194, protocol udp, servername simpleopenvpn."
-  echo "The server name is just for your convinience, it does not"
-  echo "have to be related to the dns name of the server."
+  echo "Default: port 110, TCP, servername OpenVPN-<protocol>-<port #>."
   exit 0
 fi
 
 if [ "x$1" = "x" ]
 then
-  PORT=1194
+  PORT=110
 else
   PORT=$1
 fi
@@ -65,7 +63,7 @@ fi
 
 if [ "x$2" = "x" ]
 then
-  PROTO="udp"
+  PROTO="tcp"
 else
   PROTO=$2
 fi
@@ -78,7 +76,7 @@ fi
 
 if [ "x$3" = "x" ]
 then
-  ME="simpleopenvpn"
+  ME="openvpn-$PROTO-$PORT"
 else
   ME=$3
 fi
@@ -176,10 +174,10 @@ cat >> /etc/rc.local << END
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -I INPUT -p $PROTO --dport $PORT -j ACCEPT
 
-iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 192.168.2.0/24 -d 0.0.0.0/0 -o venet0 -j MASQUERADE
 #default firewall in centos forbids these
-iptables -I FORWARD -i eth0 -o tun0 -j ACCEPT
-iptables -I FORWARD -i tun0 -o eth0 -j ACCEPT
+iptables -I FORWARD -i venet0 -o tun0 -j ACCEPT
+iptables -I FORWARD -i tun0 -o venet0 -j ACCEPT
 
 #not sure if these are really necessary, they probably are the default.
 iptables -t nat -P POSTROUTING ACCEPT

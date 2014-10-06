@@ -1,19 +1,4 @@
-Setup Simple OpenVPN server for Amazon Linux, Centos, Ubuntu, Debian
-====================================================================
-
-Script has been tested on Amazon EC2:
-    Amazon Linux AMI 2013.09,
-    Red Hat Enterprise Linux 6.4,
-    Ubuntu Server 12.04.2 LTS
-Rackspace:
-    Centos 6.4,
-    Ubuntu 12.04 LTS (Precise Pangolin),
-    Debian 6.06 (Squeeze),
-    Debian 7 (Wheezy)
-
-User documentation is quite lacking currently.
-
-Patches preferably as Github pull requests are welcome!
+This is a fork of viljoviitanen's script (https://github.com/viljoviitanen/setup-simple-openvpn).
 
 GPL version 2 licensed easy-rsa tools and example configuration copied
 from OpenVPN project, Copyright (C) 2002-2010 OpenVPN Technologies, Inc.
@@ -25,13 +10,6 @@ Licensed under GPL version 2.
 INSTALLATION INSTRUCTIONS
 =========================
 
-**Amazon EC2, all images**
-
-- Allow UDP port 1194 through the firewall ("security group")
-
-**Amazon Linux 2013.09**
-
-- Just continue to the common instructions
 
 **Centos 6.4, Red Hat Enterprise Linux 6.4**
 
@@ -64,7 +42,7 @@ INSTALLATION INSTRUCTIONS
 
 - Download the repo zip file and run the installation script: ::
 
-    wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
+    wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip or git clone https://github.com/iTechnoguy/setup-simple-openvpn
     unzip master
     cd setup-simple-openvpn-master
     sudo sh setup.sh
@@ -93,25 +71,8 @@ INSTALLATION INSTRUCTIONS
 
 - Enjoy your very own VPN!
 
-Some notes
-==========
+Changes from Original
+=====================
 
-You can change the default port (1197) and protocol (udp) on the command
-line when starting the setup. See ``sh setup.sh -h`` for details. This is
-useful if the default port/protocol are blocked. If you have trouble
-connecting to the vpn with the defaults, try ``sudo sh setup.sh 443 tcp``
-(443 is the https port, it's rarely blocked). If you have an external
-firewall like with Amazon EC2, remember to open the port/protocol there.
-
-Clients are configured to use Google public dns servers when
-the vpn connection is active: https://developers.google.com/speed/public-dns/
-
-Only one client certificate is generated, but it can be used simultaneously
-with multiple connections. To generate more client certificates, see the
-commented lines in the setup script.
-
-If you keep the vpn server generated with this script on the internet for a
-long time (days or more), consider either restricting access to the ssh port on
-the server by ip addresses to the networks you use, if you know the addresses
-you are most likely to use or at least change ssh from port 22 to a random
-port.
+Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
+Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
