@@ -9,7 +9,7 @@ Licensed under GPL version 2.
 
 INSTALLATION INSTRUCTIONS
 =========================
-
+OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses eth0.
 
 **Centos 6.4, Red Hat Enterprise Linux 6.4**
 
@@ -62,5 +62,7 @@ Changes from Original
 Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
 
 Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
+
+Added two versions of the script, one for protocol venet0 specific (openvz-setup.sh), and eth0 (normal-setup.sh).
 
 The script now creates a Linux specific version, since not all distros support the Windows method of pushing DNS configs, and also needs script-security 2.
