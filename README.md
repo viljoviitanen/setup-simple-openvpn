@@ -13,11 +13,11 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 
 **RHEL, CentOS, Fedora**
 
-- Install unzip ::
+- Install unzip:
 
     sudo yum -y install unzip
 
-- Enable the EPEL repository. When writing this, it's as simple as: ::
+- Enable the EPEL repository. When writing this, it's as simple as:
 
     sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
@@ -29,7 +29,7 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 
 **Debian, Ubuntu, and other Debian based distros**
 
-- Install unzip ::
+- Install unzip:
 
     sudo apt-get -y install unzip
 
@@ -40,15 +40,15 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 - Make sure you sync your server's clock with NTP or you will be unable to connect to your new VPN server
   due to your SSL certificates being invalid
 
-- Download the repo zip file and run the installation script: ::
+- Download the repo zip file and run the installation script:
 
 ```
-wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip or git clone https://github.com/iTechnoguy/setup-simple-openvpn
+wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip
+or
+git clone https://github.com/iTechnoguy/setup-simple-openvpn
 
 unzip master
-
 cd setup-simple-openvpn-master
-
 sudo sh setup.sh
 ```
 
