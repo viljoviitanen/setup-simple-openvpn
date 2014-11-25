@@ -213,8 +213,8 @@ then
   IP=`cat "$HOME/.my.ip" | tr -cd [0-9].`
   echo "Using cached external ip address"
 else
-  echo "Detecting external ip address"
-  IP=`wget -q -O - http://ipecho.net/plain`
+  echo "Detecting external IP address"
+  IP=`curl icanhazip.com`
   echo "$IP" > "$HOME/.my.ip"
 fi
 
@@ -225,10 +225,10 @@ then
   echo "  !!!  COULD NOT DETECT SERVER EXTERNAL IP ADDRESS  !!!"
   echo "============================================================"
   echo "Make sure you edit the $ME.ovpn file before trying to use it"
-  echo "Search 'UNKNOWN-ADDRESS' and replace it with the correct ip address"
+  echo "Search 'UNKNOWN-ADDRESS' and replace it with the correct IP address"
 else
   echo "============================================================"
-  echo "Detected your server external ip address: $IP"
+  echo "Detected your server's external IP address: $IP"
   echo "============================================================"
   echo "Make sure it is correct before using the client configuration files!"
 fi

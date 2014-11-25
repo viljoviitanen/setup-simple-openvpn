@@ -1,11 +1,11 @@
-This is a fork of viljoviitanen's script (https://github.com/viljoviitanen/setup-simple-openvpn).
+This is a fork of viljoviitanen's script (https://github.com/viljoviitanen/setup-simple-openvpn). All of my changes are licensed under GPLv2, see gplv2.txt.
 
-GPL version 2 licensed easy-rsa tools and example configuration copied
+GPLv2 licensed easy-rsa tools and example configuration copied
 from OpenVPN project, Copyright (C) 2002-2010 OpenVPN Technologies, Inc.
 See OPENVPN-COPYING.txt
 
 Other parts Copyright 2012-2013 Viljo Viitanen <viljo.viitanen@iki.fi>
-Licensed under GPL version 2. 
+Licensed under GPLv2, see gplv2.txt.
 
 Installation Instructions
 =========================
@@ -15,11 +15,15 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 
 - Install unzip:
 
-    sudo yum -y install unzip
+```
+sudo yum -y install unzip
+```
 
 - Enable the EPEL repository. When writing this, it's as simple as:
 
-    sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+```
+sudo rpm -iv http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+```
 
   If the link does not work, see instructions at http://fedoraproject.org/wiki/EPEL .
   Also EPEL may already be enabled on your server, so just try to run the setup script.
@@ -31,7 +35,9 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 
 - Install unzip:
 
-    sudo apt-get -y install unzip
+```
+sudo apt-get -y install unzip
+```
 
 - Continue with the common instructions
 
@@ -47,12 +53,12 @@ wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip
 or
 git clone https://github.com/iTechnoguy/setup-simple-openvpn
 
-unzip master
+unzip master.zip (wget method)
 cd setup-simple-openvpn-master
 sudo sh setup.sh
 ```
 
-- Let the script run. Take note if the server external ip address
+- Let the script run. Take note if the server external IP address
   detection is succesful. If it's not, you need to edit the
   configuration files before using them.
 
@@ -60,14 +66,22 @@ sudo sh setup.sh
   there is both a zipped file with all the config files and
   the plain configuration files
 
+To-Do
+=====
+
+- Add support for other Linux distros
+
+- Possibly add OS X support
 
 Changes from Original
 =====================
 
-Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
+- Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
 
-Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
+- Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
 
-Added two versions of the script, one for protocol venet0 specific (openvz-setup.sh), and eth0 (normal-setup.sh).
+- Added two versions of the script, one for protocol venet0 specific (openvz-setup.sh), and eth0 (normal-setup.sh).
 
-The script now creates a Linux specific version, since not all distros support the Windows method of pushing DNS configs, and also needs script-security 2.
+- The script now creates a Linux specific version, since not all distros support the Windows method of pushing DNS configs, and also needs script-security 2.
+
+- The config files are labeled with the public IP address, and the Linux specific config is labeled with "linux" at the beginning.

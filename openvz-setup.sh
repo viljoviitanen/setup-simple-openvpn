@@ -211,10 +211,10 @@ sh /etc/rc.local
 if [ `find "$HOME/.my.ip" -mmin -5 2>/dev/null` ]
 then
   IP=`cat "$HOME/.my.ip" | tr -cd [0-9].`
-  echo "Using cached external ip address"
+  echo "Using cached external IP address"
 else
-  echo "Detecting external ip address"
-  IP=`wget -q -O - http://ipecho.net/plain`
+  echo "Detecting external IP address"
+  IP=`curl icanhazip.com`
   echo "$IP" > "$HOME/.my.ip"
 fi
 
@@ -228,7 +228,7 @@ then
   echo "Search 'UNKNOWN-ADDRESS' and replace it with the correct ip address"
 else
   echo "============================================================"
-  echo "Detected your server external ip address: $IP"
+  echo "Detected your server's external IP address: $IP"
   echo "============================================================"
   echo "Make sure it is correct before using the client configuration files!"
 fi
