@@ -1,11 +1,12 @@
-This is a fork of viljoviitanen's script (https://github.com/viljoviitanen/setup-simple-openvpn). All of my changes are licensed under GPLv2, see gplv2.txt.
+This is a fork of viljoviitanen's script (https://github.com/viljoviitanen/setup-simple-openvpn).
+All of my changes are licensed under GPLv2, see LICENSE.txt.
 
 GPLv2 licensed easy-rsa tools and example configuration copied
 from OpenVPN project, Copyright (C) 2002-2010 OpenVPN Technologies, Inc.
 See OPENVPN-COPYING.txt
 
 Other parts Copyright 2012-2013 Viljo Viitanen <viljo.viitanen@iki.fi>
-Licensed under GPLv2, see gplv2.txt.
+Licensed under GPLv2, see LICENSE.txt.
 
 Installation Instructions
 =========================
