@@ -56,8 +56,15 @@ git clone https://github.com/iTechnoguy/setup-simple-openvpn
 
 unzip master.zip (wget method)
 cd setup-simple-openvpn-master
-sudo sh setup.sh
+sudo sh <type>-setup.sh
 ```
+
+- By default, the script uses TCP 110, but if you want to use a different
+  port run the script with:
+```
+sudo sh <type>-setup.sh <port #> <protocol>
+```
+  where port # can be anything between 1-65535, and protocol is either "tcp" or "udp" (no quotes).
 
 - Let the script run. Take note if the server external IP address
   detection is succesful. If it's not, you need to edit the
@@ -77,7 +84,7 @@ To-Do
 Changes from Original
 =====================
 
-- Default port is TCP 110, you can use a different port or protocol by running setup.sh with setup.sh <port #> <protocol>
+- Default port is now TCP 110.
 
 - Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
 
