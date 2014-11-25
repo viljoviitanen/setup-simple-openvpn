@@ -7,11 +7,11 @@ See OPENVPN-COPYING.txt
 Other parts Copyright 2012-2013 Viljo Viitanen <viljo.viitanen@iki.fi>
 Licensed under GPL version 2. 
 
-INSTALLATION INSTRUCTIONS
+Installation Instructions
 =========================
 OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses eth0.
 
-**Centos 6.4, Red Hat Enterprise Linux 6.4**
+**RHEL, CentOS, Fedora**
 
 - Install unzip ::
 
@@ -27,7 +27,7 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 
 - Continue with the common instructions
 
-**Ubuntu 12.04, Debian 6.06, Debian 7**
+**Debian, Ubuntu, and other Debian based distros**
 
 - Install unzip ::
 
@@ -42,10 +42,15 @@ OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses e
 
 - Download the repo zip file and run the installation script: ::
 
-    wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip or git clone https://github.com/iTechnoguy/setup-simple-openvpn
-    unzip master
-    cd setup-simple-openvpn-master
-    sudo sh setup.sh
+```
+wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip or git clone https://github.com/iTechnoguy/setup-simple-openvpn
+
+unzip master
+
+cd setup-simple-openvpn-master
+
+sudo sh setup.sh
+```
 
 - Let the script run. Take note if the server external ip address
   detection is succesful. If it's not, you need to edit the
