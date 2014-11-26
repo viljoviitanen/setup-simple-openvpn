@@ -50,9 +50,9 @@ sudo apt-get -y install unzip
 - Download the repo zip file and run the installation script:
 
 ```
-wget https://github.com/iTechnoguy/setup-simple-openvpn/archive/master.zip
+wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
 or
-git clone https://github.com/iTechnoguy/setup-simple-openvpn
+git clone https://github.com/viljoviitanen/setup-simple-openvpn
 
 unzip master.zip (wget method)
 cd setup-simple-openvpn-master
@@ -84,9 +84,7 @@ To-Do
 Changes from Original
 =====================
 
-- Default port is now TCP 110.
-
-- Also modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
+- Modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
 
 - Added two versions of the script, one for protocol venet0 specific (openvz-setup.sh), and eth0 (normal-setup.sh).
 

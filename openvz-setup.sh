@@ -32,13 +32,15 @@ OPENVPN='/etc/openvpn'
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ]
 then
   echo "Usage: $0 [port] [protocol] [servername]"
-  echo "Default: port 110, TCP, servername OpenVPN-<protocol>-<port #>."
+  echo "Default: port 1194, UDP, servername OpenVPN-<protocol>-<port #>."
+  echo "The server name is just for your convinience, it does not"
+  echo "have to be related to the dns name of the server."
   exit 0
 fi
 
 if [ "x$1" = "x" ]
 then
-  PORT=110
+  PORT=1194
 else
   PORT=$1
 fi
@@ -63,7 +65,7 @@ fi
 
 if [ "x$2" = "x" ]
 then
-  PROTO="tcp"
+  PROTO="udp"
 else
   PROTO=$2
 fi
