@@ -32,7 +32,7 @@ OPENVPN='/etc/openvpn'
 if [ "x$1" = "x-h" -o "x$1" = "x--help" ]
 then
   echo "Usage: $0 [port] [protocol] [servername]"
-  echo "Default: port 1194, protocol udp, servername simpleopenvpn."
+  echo "Default: port 1194, UDP, servername OpenVPN-<protocol>-<port #>."
   echo "The server name is just for your convinience, it does not"
   echo "have to be related to the dns name of the server."
   exit 0
@@ -78,7 +78,7 @@ fi
 
 if [ "x$3" = "x" ]
 then
-  ME="simpleopenvpn"
+  ME="openvpn-$PROTO-$PORT"
 else
   ME=$3
 fi
@@ -215,8 +215,8 @@ then
   IP=`cat "$HOME/.my.ip" | tr -cd [0-9].`
   echo "Using cached external ip address"
 else
-  echo "Detecting external ip address"
-  IP=`wget -q -O - http://ipecho.net/plain`
+  echo "Detecting external IP address"
+  IP=`curl icanhazip.com`
   echo "$IP" > "$HOME/.my.ip"
 fi
 
@@ -227,10 +227,10 @@ then
   echo "  !!!  COULD NOT DETECT SERVER EXTERNAL IP ADDRESS  !!!"
   echo "============================================================"
   echo "Make sure you edit the $ME.ovpn file before trying to use it"
-  echo "Search 'UNKNOWN-ADDRESS' and replace it with the correct ip address"
+  echo "Search 'UNKNOWN-ADDRESS' and replace it with the correct IP address"
 else
   echo "============================================================"
-  echo "Detected your server external ip address: $IP"
+  echo "Detected your server's external IP address: $IP"
   echo "============================================================"
   echo "Make sure it is correct before using the client configuration files!"
 fi
@@ -239,13 +239,17 @@ sleep 2
 TMPDIR=`mktemp -d --tmpdir=. openvpn.XXX` || { echo "Cannot make temporary directory, aborting!"; exit 1; }
 
 cp template-client-config $TMPDIR/$ME.ovpn
+cp template-client-config-linux $TMPDIR/linux-$ME.ovpn
 cd $TMPDIR || { echo "Cannot cd into a temporary directory, aborting!"; exit 1; }
+
 
 cp $OPENVPN/easy-rsa/keys/ca.crt "ca-$ME.crt"
 cp $OPENVPN/easy-rsa/keys/client1-$ME.key $OPENVPN/easy-rsa/keys/client1-$ME.crt .
 sed -i -e "s/VPN_SERVER_ADDRESS/$IP/" -e "s/client1/client1-$ME/" -e "s/^ca ca.crt/ca ca-$ME.crt/" $ME.ovpn
 sed -i -e "s/VPN_PROTO/$PROTO/" -e "s/VPN_PORT/$PORT/"  $ME.ovpn
-zip $ME-$IP.zip $ME.ovpn ca-$ME.crt client1-$ME.key client1-$ME.crt
+sed -i -e "s/VPN_SERVER_ADDRESS/$IP/" -e "s/client1/client1-$ME/" -e "s/^ca ca.crt/ca ca-$ME.crt/" linux-$ME.ovpn
+sed -i -e "s/VPN_PROTO/$PROTO/" -e "s/VPN_PORT/$PORT/"  linux-$ME.ovpn
+zip $ME-$IP.zip $ME.ovpn linux-$ME.ovpn ca-$ME.crt client1-$ME.key client1-$ME.crt
 chmod -R a+rX .
 
 echo "----"
