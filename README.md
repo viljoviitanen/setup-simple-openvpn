@@ -1,11 +1,12 @@
-This is a fork of viljoviitanen's script (https://github.com/viljoviitanen/setup-simple-openvpn).
-All of my changes are licensed under GPLv2, see LICENSE.txt.
+LICENSE
+=======
 
 GPLv2 licensed easy-rsa tools and example configuration copied
 from OpenVPN project, Copyright (C) 2002-2010 OpenVPN Technologies, Inc.
 See OPENVPN-COPYING.txt
 
-Other parts Copyright 2012-2013 Viljo Viitanen <viljo.viitanen@iki.fi>
+Other parts Copyright 2012-2014 Viljo Viitanen <viljo.viitanen@iki.fi>
+and Issac Kim https://github.com/iTechnoguy .
 Licensed under GPLv2, see LICENSE.txt.
 
 Installation Instructions
@@ -59,7 +60,7 @@ cd setup-simple-openvpn-master
 sudo sh <type>-setup.sh
 ```
 
-- By default, the script uses TCP 110, but if you want to use a different
+- By default, the script uses UDP 1194, but if you want to use a different
   port run the script with:
 ```
 sudo sh <type>-setup.sh <port #> <protocol>
@@ -81,8 +82,8 @@ To-Do
 
 - Possibly add OS X support
 
-Changes from Original
-=====================
+Modifications by Issac Kim
+==========================
 
 - Modified for use with OpenVZ VPSes, since they use venet0 instead of eth0.
 
