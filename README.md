@@ -57,12 +57,10 @@ sudo apt-get -y install unzip
 
 ```
 wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
-or
-git clone https://github.com/viljoviitanen/setup-simple-openvpn
 
-unzip master.zip (wget method)
+unzip master.zip
 cd setup-simple-openvpn-master
-sudo sh <type>-setup.sh
+sudo sh normal-setup.sh # or openvz-setup.sh
 ```
 
 - By default, the script uses UDP 1194, but if you want to use a different
