@@ -57,7 +57,6 @@ sudo apt-get -y install unzip
 
 ```
 wget https://github.com/viljoviitanen/setup-simple-openvpn/archive/master.zip
-
 unzip master.zip
 cd setup-simple-openvpn-master
 sudo sh normal-setup.sh # or openvz-setup.sh
