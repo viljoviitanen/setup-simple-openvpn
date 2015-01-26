@@ -9,6 +9,11 @@ Other parts Copyright 2012-2014 Viljo Viitanen <viljo.viitanen@iki.fi>
 and Issac Kim https://github.com/iTechnoguy .
 Licensed under GPLv2, see LICENSE.txt.
 
+NOTES
+=====
+
+Amazon Linux 2014.09 does not work with this script currently! At least older Centos 6 and Ubuntu 12.04 LTS releases work, possibly many others too. Newer Centos and Ubuntu releases (Centos 7, Ubuntu 14.04 LTS) are untested by the author.
+
 Installation Instructions
 =========================
 OpenVZ script is for VPSes that use venet0 instead of eth0, normal script uses eth0.
