@@ -80,6 +80,11 @@ sudo sh <type>-setup.sh <port #> <protocol>
   there is both a zipped file with all the config files and
   the plain configuration files
 
+Client Installation
+===================
+
+In a nutshell: Install an openvpn client, download the client configuration files from server somehow (e.g. with scp), then just use the configuration files. See [Client Installation Guide](https://github.com/viljoviitanen/setup-simple-openvpn/wiki/Client-Installation-Guide) for detailed instructions for Ubuntu, MacOS and Windows 7 desktops. 
+
 To-Do
 =====
 
