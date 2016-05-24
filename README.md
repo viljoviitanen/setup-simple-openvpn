@@ -12,7 +12,7 @@ Licensed under GPLv2, see LICENSE.txt.
 NOTES
 =====
 
-Amazon Linux 2014.09 does not work with this script currently! Centos 6 and Ubuntu 12.04 and 14.04 LTS releases work, possibly many others too. Centos 7 is untested by the author.
+Centos 7 and Amazon Linux 2014.09 do not work with this script currently! Centos 6 and Ubuntu 12.04 and 14.04 LTS releases work, possibly some others too.
 
 Installation Instructions
 =========================
